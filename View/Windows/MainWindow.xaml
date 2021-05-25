@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:KantorLr10"
+        xmlns:local="clr-namespace:KantorLr10" xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="450" Width="800"
+        Title="{Binding Title}" Height="507" Width="800"
         DataContext="{Binding MainWindowViewModel, Source={StaticResource Locator}}">
     <Window.Resources>
         <Style TargetType="DataGrid">
@@ -33,22 +33,96 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <GridSplitter Grid.Column="1" Width="3" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="BlueViolet"/>
-            <DockPanel MinWidth="330">
+            <DockPanel MinWidth="330" Grid.Column="0" >
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="5,5">
                     <Button Content="Из файла"/>
                     <TextBox Text="Имя файла" Width="70" Margin="5,0,10,0"/>
                     <Button Content="Сохранить в файл"/>
                     <TextBox Text="Имя файла" Width="70" Margin="5,0,0,0"/>
                 </StackPanel>
-                <DataGrid MinWidth="170" Width="190">
+                <DataGrid MinWidth="150" Width="170">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Что тут?"/>
                         <DataGridTextColumn Header="Что тут?" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                <StackPanel>
-                    
+                <StackPanel Margin="5,0">
+                    <TextBlock TextWrapping="Wrap" Text="Ниже задайте параметрический вид границы области" TextAlignment="Center" Width="170"/>
+                    <DockPanel Margin="0,5">
+                        <TextBlock Text="x(t) ="/>
+                        <TextBox Margin="5,0,0,0" />
+                    </DockPanel>
+                    <DockPanel Margin="0,5">
+                        <TextBlock Text="y(t) ="/>
+                        <TextBox Margin="5,0,0,0" />
+                    </DockPanel>
+                    <StackPanel HorizontalAlignment="Left">
+                        <Button Content="Нарисовать область"/>
+                        <Button Content="Убрать область" Margin="0,5"/>
+                        <Button Content="Рассчет площади" Margin="0,5"/>
+                        <Button Content="Стереть красные" Margin="0,10,0,0"/>
+                        <Button Content="Восстановить красные" Margin="0,5"/>
+                        <Button Content="Стереть зеленые" Margin="0,15,0,0"/>
+                        <Button Content="Восстановить зеленые" Margin="0,5"/>
+                        <Button Content="Стереть центр тяжести" Margin="0,10,0,0"/>
+                        <Button Margin="0,5">
+                            <Button.Content>
+                                <TextBlock Text="Восстановить центр тяжести" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
+            </DockPanel>
+            <DockPanel Grid.Column="2" Margin="5,0">
+                <StackPanel DockPanel.Dock="Bottom" Margin="0,5">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Площадь (Симпсон) ="/>
+                                <TextBlock Text="11" Margin="5,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Площадь (Монте-Карло) ="/>
+                                <TextBlock Text="11" Margin="5,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="30,0,0,0">
+                            <TextBlock Text="Разница ="/>
+                            <TextBlock Text="11" Margin="5,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,0">
+                        <TextBlock Text="Координаты центра тяжести:"/>
+                        <TextBlock Text="X:" Margin="10,0,0,0"/>
+                        <TextBlock Text="coord" Margin="5,0"/>
+                        <TextBlock Text="Y:" Margin="10,0,0,0"/>
+                        <TextBlock Text="coord" Margin="5,0"/>
+                    </StackPanel>
+                </StackPanel>
+                <oxy:Plot Title="Binding" TitleFontSize="12">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left"/>
+                        <oxy:LinearAxis Position="Bottom"/>
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries Title="Точки попали в область" 
+                                        DataFieldX="X"
+                                        DataFieldY="Y"
+                                        Color="Transparent"
+                                    MarkerFill="Green"
+                                    MarkerType="Circle"/>
+                    <oxy:LineSeries Title="Точки не попали в область"
+                                    Color="Transparent"
+                                    MarkerFill="Red"
+                                    MarkerType="Circle"/>
+                    <oxy:LineSeries Title="Центр тяжести"
+                                    Color="Transparent"
+                                    MarkerFill="Blue"
+                                    MarkerType="Circle"/>
+                    <oxy:LineSeries Title="Граница области" 
+                                        DataFieldX="X"
+                                        DataFieldY="Y"
+                                        Color="BlueViolet"/>
+                </oxy:Plot>
             </DockPanel>
         </Grid>
     </DockPanel>
